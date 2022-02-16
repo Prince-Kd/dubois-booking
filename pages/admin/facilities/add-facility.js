@@ -24,7 +24,7 @@ export default function AddFacility() {
   const handleSubmit = (e) => {
     e.preventDefault();
     setIsLoading(true);
-    if (files) {
+    if (files.length != 0) {
       const data = {
         name,
         type,
@@ -85,12 +85,17 @@ export default function AddFacility() {
           </div>
           <div className="flex flex-col">
             <label>Price</label>
-            <input
-              onChange={(e) => setPrice(e.target.value)}
-              type={"text"}
-              className=" form-input rounded-md mt-1 mb-4"
-              placeholder="Facility price"
-            />
+            <div className="rounded-md mt-1 mb-4 w-full relative">
+              <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                <span className="text-gray-500 sm:text-sm">GHC</span>
+              </div>
+              <input
+                onChange={(e) => setPrice(e.target.value)}
+                type={"text"}
+                className=" form-input rounded-md pl-12"
+                placeholder="Facility price"
+              />
+            </div>
           </div>
         </div>
         <div className="flex flex-col">
@@ -107,10 +112,9 @@ export default function AddFacility() {
         <div className="flex">
           <FileUploader
             handleChange={(file) => {
-              const result = Object.values(file);
-              setFiles((oldFiles) =>
-                [...(new Set([...oldFiles, ...result]).values())]
-              );
+              const results = Object.values(file);
+              setFileError(false)
+              setFiles(results);
             }}
             files
             name="file"
@@ -126,7 +130,11 @@ export default function AddFacility() {
           </div>
           <div className="flex flex-col">
             <div className="ml-4 italic text-gray-500">{}</div>
-            {/* {files.map(file => <div>{file.name}</div>)} */}
+            {files.map((file, index) => (
+              <div className="ml-4 italic text-gray-600">{`${index + 1}. ${
+                file.name
+              }`}</div>
+            ))}
           </div>
         </div>
 
